@@ -25,8 +25,6 @@ public class IsiAppActivity extends AppCompatActivity{
     public boolean onTouchEvent(MotionEvent event) {
 
         if(swapped){
-     /*Make sure you don't swap twice,
-since the dispatchTouchEvent might dispatch your touch event to this function again!*/
             swapped = false;
             return super.onTouchEvent(event);
         }
@@ -58,12 +56,9 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
     private final BroadcastReceiver guestReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
             final int message = intent.getIntExtra("time_out", 0);
 
             if(message != 0){
-
-                final Context copy = context;
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -72,8 +67,6 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
                         doSomethingOnTimeout();
 
                         if(closing){
-                            Log.e("", "run: i'm closing" );
-                            Toast.makeText(copy, "i'm closing", Toast.LENGTH_SHORT).show();
                             finish();
                             System.exit(0);
                         }else{
@@ -109,16 +102,19 @@ since the dispatchTouchEvent might dispatch your touch event to this function ag
 
     private void getPackageNameSlide(int code){
 
-        Intent myIntent = new Intent();
-        myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
-        myIntent.putExtra("package_name", getApplicationContext().getPackageName());
-        myIntent.putExtra("code", code);
-        if(code == 0){
-            startActivityForResult(myIntent, 200);
-        }else{
-            startActivityForResult(myIntent, 201);
-        }
+        try{
+            Intent myIntent = new Intent();
+            myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
+            myIntent.putExtra("package_name", getApplicationContext().getPackageName());
+            myIntent.putExtra("code", code);
+            if(code == 0){
+                startActivityForResult(myIntent, 200);
+            }else{
+                startActivityForResult(myIntent, 201);
+            }
+        }catch (Exception ignored){
 
+        }
 
     }
 
