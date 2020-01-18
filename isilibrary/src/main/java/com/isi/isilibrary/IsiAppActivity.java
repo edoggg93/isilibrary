@@ -19,15 +19,8 @@ public class IsiAppActivity extends AppCompatActivity{
 
     public boolean closing = true;
 
-    private boolean swapped = false;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        if(swapped){
-            swapped = false;
-            return super.onTouchEvent(event);
-        }
 
         switch(event.getAction())
         {
@@ -45,8 +38,6 @@ public class IsiAppActivity extends AppCompatActivity{
                 }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
                     getPackageNameSlide(1);
                 }
-
-                swapped = true;
 
                 break;
         }
@@ -90,13 +81,6 @@ public class IsiAppActivity extends AppCompatActivity{
 
         registerReceiver(guestReceiver, new IntentFilter("timeoutService"));
 
-
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        onTouchEvent(ev);
-        return super.dispatchTouchEvent(ev);
 
     }
 
