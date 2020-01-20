@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,9 +25,16 @@ public class IsiAppActivity extends AppCompatActivity{
 
     public boolean closing = true;
 
-    private ViewGroup mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+    private ViewGroup mainView;
 
     private View inflate = null;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+    }
 
     @SuppressLint("InflateParams")
     @Override
