@@ -33,7 +33,6 @@ public class IsiAppActivity extends AppCompatActivity{
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
     }
 
     @SuppressLint("InflateParams")
@@ -78,6 +77,8 @@ public class IsiAppActivity extends AppCompatActivity{
                     });
 
                     YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
+
+                    mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
 
                     mainView.addView(inflate);
 
