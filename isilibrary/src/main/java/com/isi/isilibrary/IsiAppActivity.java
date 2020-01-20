@@ -30,7 +30,6 @@ public class IsiAppActivity extends AppCompatActivity{
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
-
         switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
@@ -76,7 +75,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 break;
         }
-        super.onTouchEvent(ev);
+        super.dispatchTouchEvent(ev);
         return true;
     }
 
