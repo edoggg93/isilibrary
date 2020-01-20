@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,28 +25,20 @@ public class IsiAppActivity extends AppCompatActivity{
     public boolean closing = true;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean dispatchTouchEvent(MotionEvent ev) {
 
-        switch(event.getAction())
-        {
+
+        switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                y1 = event.getY();
+                y1 = ev.getY();
                 break;
+
             case MotionEvent.ACTION_UP:
-                float x2 = event.getX();
-                float y2 = event.getY();
-                float deltaX = x2 - x1;
-                float deltay = y2 - y1;
-                if (Math.abs(deltaX) > MIN_DISTANCE && x2 > x1)
-                {
 
-                    getPackageNameSlide(0);
+                float y2 = ev.getY();
+                float deltay = Math.abs(y2-y1);
 
-                }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
-                    getPackageNameSlide(1);
-                }else if(Math.abs(deltay) > MIN_DISTANCE && y1 == 0){
-
+                if(deltay > MIN_DISTANCE && y1 < 40){
                     LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                     assert inflater != null;
                     @SuppressLint("InflateParams") final View inflate = inflater.inflate(R.layout.menu_layout, null);
@@ -55,14 +48,40 @@ public class IsiAppActivity extends AppCompatActivity{
                     closeMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
                             ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).removeView(inflate);
-
                         }
                     });
 
                     ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).addView(inflate);
 
+                    Log.e("", "dispatchTouchEvent: " + "here");
+
+
+                }
+
+                break;
+        }
+        return super.onTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float x2 = event.getX();
+                float deltaX = x2 - x1;
+                if (Math.abs(deltaX) > MIN_DISTANCE && x2 > x1)
+                {
+
+                    getPackageNameSlide(0);
+
+                }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
+                    getPackageNameSlide(1);
                 }
 
                 break;
