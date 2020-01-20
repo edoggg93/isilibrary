@@ -28,7 +28,7 @@ public class IsiAppWebView extends WebView {
     public boolean dispatchTouchEvent(MotionEvent ev){
         super.dispatchTouchEvent(ev);
 
-        ((Activity)getContext()).onTouchEvent(ev);
+        ((Activity)getContext()).dispatchTouchEvent(ev);
 
         return true;
     }

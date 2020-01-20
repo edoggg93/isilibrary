@@ -31,14 +31,24 @@ public class IsiAppActivity extends AppCompatActivity{
         switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
+                x1 = ev.getX();
                 break;
 
             case MotionEvent.ACTION_UP:
 
                 float y2 = ev.getY();
                 float deltay = Math.abs(y2-y1);
+                float x2 = ev.getX();
+                float deltaX = x2 - x1;
 
-                if(deltay > MIN_DISTANCE && y1 < 40){
+                if (Math.abs(deltaX) > MIN_DISTANCE && x2 > x1)
+                {
+
+                    getPackageNameSlide(0);
+
+                }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
+                    getPackageNameSlide(1);
+                }else if(deltay > MIN_DISTANCE && y1 < 40){
                     LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                     assert inflater != null;
                     @SuppressLint("InflateParams") final View inflate = inflater.inflate(R.layout.menu_layout, null);
@@ -61,32 +71,8 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 break;
         }
-        return super.onTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        switch(event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                float x2 = event.getX();
-                float deltaX = x2 - x1;
-                if (Math.abs(deltaX) > MIN_DISTANCE && x2 > x1)
-                {
-
-                    getPackageNameSlide(0);
-
-                }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
-                    getPackageNameSlide(1);
-                }
-
-                break;
-        }
-        return super.onTouchEvent(event);
+        super.onTouchEvent(ev);
+        return true;
     }
 
     private final BroadcastReceiver guestReceiver = new BroadcastReceiver() {
