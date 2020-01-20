@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,18 +55,20 @@ public class IsiAppActivity extends AppCompatActivity{
                     assert inflater != null;
                     @SuppressLint("InflateParams") final View inflate = inflater.inflate(R.layout.menu_layout, null);
 
+                    final ViewGroup mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+
                     Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
 
                     closeMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).removeView(inflate);
+                            mainView.removeView(inflate);
                         }
                     });
 
                     YoYo.with(Techniques.SlideInDown).duration(1000).repeat(0).playOn(inflate);
 
-                    ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).addView(inflate);
+                    mainView.addView(inflate);
 
                 }
 
