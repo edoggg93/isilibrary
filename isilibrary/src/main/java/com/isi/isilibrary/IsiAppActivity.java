@@ -11,11 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
@@ -27,6 +24,11 @@ public class IsiAppActivity extends AppCompatActivity{
 
     public boolean closing = true;
 
+    private ViewGroup mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+
+    private View inflate = null;
+
+    @SuppressLint("InflateParams")
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -53,21 +55,21 @@ public class IsiAppActivity extends AppCompatActivity{
                 }else if(deltay > MIN_DISTANCE && y1 < 40){
                     LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                     assert inflater != null;
-                    @SuppressLint("InflateParams") final View inflate = inflater.inflate(R.layout.menu_layout, null);
-
-                    final ViewGroup mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+                    inflate = inflater.inflate(R.layout.menu_layout, null);
 
                     Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
 
                     closeMenu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(IsiAppActivity.this, "touched", Toast.LENGTH_SHORT).show();
                             mainView.removeView(inflate);
+
+                            inflate = null;
+
                         }
                     });
 
-                    YoYo.with(Techniques.SlideInDown).duration(1000).repeat(0).playOn(inflate);
+                    YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
 
                     mainView.addView(inflate);
 
@@ -77,6 +79,19 @@ public class IsiAppActivity extends AppCompatActivity{
         }
         super.dispatchTouchEvent(ev);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(inflate != null){
+
+            mainView.removeView(inflate);
+
+        }else{
+            super.onBackPressed();
+        }
     }
 
     private final BroadcastReceiver guestReceiver = new BroadcastReceiver() {
