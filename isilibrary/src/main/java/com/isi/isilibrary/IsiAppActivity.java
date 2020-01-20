@@ -1,13 +1,16 @@
 package com.isi.isilibrary;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class IsiAppActivity extends AppCompatActivity{
 
     private float x1;
+    private float y1;
     static final int MIN_DISTANCE = 400;
 
     public boolean closing = true;
@@ -26,10 +30,13 @@ public class IsiAppActivity extends AppCompatActivity{
         {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
+                y1 = event.getY();
                 break;
             case MotionEvent.ACTION_UP:
                 float x2 = event.getX();
+                float y2 = event.getY();
                 float deltaX = x2 - x1;
+                float deltay = y2 - y1;
                 if (Math.abs(deltaX) > MIN_DISTANCE && x2 > x1)
                 {
 
@@ -37,6 +44,25 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
                     getPackageNameSlide(1);
+                }else if(Math.abs(deltay) > MIN_DISTANCE && y1 == 0){
+
+                    LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+                    assert inflater != null;
+                    @SuppressLint("InflateParams") final View inflate = inflater.inflate(R.layout.menu_layout, null);
+
+                    Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
+
+                    closeMenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).removeView(inflate);
+
+                        }
+                    });
+
+                    ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).addView(inflate);
+
                 }
 
                 break;
