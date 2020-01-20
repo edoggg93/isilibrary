@@ -16,6 +16,9 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 public class IsiAppActivity extends AppCompatActivity{
 
     private float x1;
@@ -62,10 +65,9 @@ public class IsiAppActivity extends AppCompatActivity{
                         }
                     });
 
+                    YoYo.with(Techniques.SlideInDown).duration(1000).repeat(0).playOn(inflate);
+
                     ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).addView(inflate);
-
-                    Log.e("", "dispatchTouchEvent: " + "here");
-
 
                 }
 
