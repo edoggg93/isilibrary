@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.daimajia.androidanimations.library.Techniques;
@@ -75,6 +79,16 @@ public class IsiAppActivity extends AppCompatActivity{
 
                         }
                     });
+
+                    ImageView thisAppImageView = inflate.findViewById(R.id.thisAppImageView);
+
+                    try {
+                        String pkg = getPackageName();//your package name
+                        Drawable icon = getPackageManager().getApplicationIcon(pkg);
+                        thisAppImageView.setImageDrawable(icon);
+                    } catch (PackageManager.NameNotFoundException ignored) {
+
+                    }
 
                     YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
 
