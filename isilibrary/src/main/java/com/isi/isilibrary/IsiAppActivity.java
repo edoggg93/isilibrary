@@ -124,7 +124,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
         TextView appName = inflate.findViewById(R.id.thisAppName);
 
-        appName.setText(getApplicationName());
+        appName.setText(getApplicationName(null));
 
         FlexboxLayout flexboxLayout = inflate.findViewById(R.id.serviceFlex);
 
@@ -144,6 +144,10 @@ public class IsiAppActivity extends AppCompatActivity{
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
+            TextView appNameSecondary = packInflate.findViewById(R.id.appName);
+
+            appNameSecondary.setText(getApplicationName(pack));
 
             flexboxLayout.addView(packInflate);
         }
@@ -258,11 +262,16 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
-    private String getApplicationName() {
+    private String getApplicationName(String packageName) {
+
+        if(packageName == null){
+            packageName = getPackageName();
+        }
+
         final PackageManager pm = getApplicationContext().getPackageManager();
         ApplicationInfo ai;
         try {
-            ai = pm.getApplicationInfo( this.getPackageName(), 0);
+            ai = pm.getApplicationInfo( packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
             ai = null;
         }
