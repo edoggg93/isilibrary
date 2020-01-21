@@ -128,7 +128,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
         FlexboxLayout flexboxLayout = inflate.findViewById(R.id.serviceFlex);
 
-        for (String pack : packages){
+        for (final String pack : packages){
 
             if(pack.equals(getPackageName())){
                 continue;
@@ -152,6 +152,16 @@ public class IsiAppActivity extends AppCompatActivity{
             TextView appNameSecondary = packInflate.findViewById(R.id.appName);
 
             appNameSecondary.setText(getApplicationName(pack));
+
+            packInflate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack);
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);//null pointer check in case package name was not found
+                    }
+                }
+            });
 
             flexboxLayout.addView(packInflate);
         }
