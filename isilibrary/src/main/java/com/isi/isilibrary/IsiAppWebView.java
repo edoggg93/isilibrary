@@ -1,6 +1,5 @@
 package com.isi.isilibrary;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,8 +26,6 @@ public class IsiAppWebView extends WebView {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
         super.dispatchTouchEvent(ev);
-
-        ((Activity)getContext()).dispatchTouchEvent(ev);
 
         return true;
     }

@@ -160,6 +160,9 @@ public class IsiAppActivity extends AppCompatActivity{
                 public void onClick(View v) {
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack);
                     if (launchIntent != null) {
+                        mainView.removeView(inflate);
+
+                        inflate = null;
                         startActivity(launchIntent);//null pointer check in case package name was not found
                     }
                 }
