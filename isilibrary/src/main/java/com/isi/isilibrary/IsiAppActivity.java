@@ -122,7 +122,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
         }
 
-        TextView appName = findViewById(R.id.thisAppName);
+        TextView appName = inflate.findViewById(R.id.thisAppName);
 
         appName.setText(getApplicationName());
 
