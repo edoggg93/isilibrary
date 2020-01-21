@@ -45,6 +45,8 @@ public class IsiAppActivity extends AppCompatActivity{
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
+        super.dispatchTouchEvent(ev);
+
         switch(ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
