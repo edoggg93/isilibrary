@@ -74,8 +74,8 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 break;
         }
-        super.dispatchTouchEvent(ev);
-        return true;
+
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
