@@ -130,6 +130,10 @@ public class IsiAppActivity extends AppCompatActivity{
 
         for (String pack : packages){
 
+            if(pack.equals(getPackageName())){
+                continue;
+            }
+
             LayoutInflater packInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
             assert packInflater != null;
             View packInflate = packInflater.inflate(R.layout.service_flex_cell, null);
@@ -275,7 +279,7 @@ public class IsiAppActivity extends AppCompatActivity{
         } catch (final PackageManager.NameNotFoundException e) {
             ai = null;
         }
-        return (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+        return (String) (ai != null ? pm.getApplicationLabel(ai) : "");
     }
 
 
