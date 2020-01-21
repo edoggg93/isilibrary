@@ -259,9 +259,14 @@ public class IsiAppActivity extends AppCompatActivity{
     }
 
     private String getApplicationName() {
-        ApplicationInfo applicationInfo = getApplicationInfo();
-        int stringId = applicationInfo.labelRes;
-        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : getString(stringId);
+        final PackageManager pm = getApplicationContext().getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo( this.getPackageName(), 0);
+        } catch (final PackageManager.NameNotFoundException e) {
+            ai = null;
+        }
+        return (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
     }
 
 
