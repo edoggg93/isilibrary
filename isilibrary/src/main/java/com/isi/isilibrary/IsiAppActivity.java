@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,11 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.flexbox.FlexboxLayout;
 
 public class IsiAppActivity extends AppCompatActivity{
 
@@ -39,7 +42,6 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
-    @SuppressLint("InflateParams")
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -64,37 +66,9 @@ public class IsiAppActivity extends AppCompatActivity{
                 }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
                     getPackageNameSlide(1);
                 }else if(deltay > MIN_DISTANCE && y1 < 40){
-                    LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-                    assert inflater != null;
-                    inflate = inflater.inflate(R.layout.menu_layout, null);
 
-                    Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
+                    updateGUI();
 
-                    closeMenu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mainView.removeView(inflate);
-
-                            inflate = null;
-
-                        }
-                    });
-
-                    ImageView thisAppImageView = inflate.findViewById(R.id.thisAppImageView);
-
-                    try {
-                        String pkg = getPackageName();//your package name
-                        Drawable icon = getPackageManager().getApplicationIcon(pkg);
-                        thisAppImageView.setImageDrawable(icon);
-                    } catch (PackageManager.NameNotFoundException ignored) {
-
-                    }
-
-                    YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
-
-                    mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
-
-                    mainView.addView(inflate);
 
                 }
 
@@ -115,6 +89,72 @@ public class IsiAppActivity extends AppCompatActivity{
         }else{
             super.onBackPressed();
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private void updateGUI(){
+
+        String[] packages = {"com.isi.isiapp", "com.isi.isicashier", "com.isi.isiorderserver", "com.isi.isiorder", "com.isi.isidoc"};
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        inflate = inflater.inflate(R.layout.menu_layout, null);
+
+        Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
+
+        closeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainView.removeView(inflate);
+
+                inflate = null;
+
+            }
+        });
+
+        ImageView thisAppImageView = inflate.findViewById(R.id.thisAppImageView);
+
+        try {
+            String pkg = getPackageName();//your package name
+            Drawable icon = getPackageManager().getApplicationIcon(pkg);
+            thisAppImageView.setImageDrawable(icon);
+        } catch (PackageManager.NameNotFoundException ignored) {
+
+        }
+
+        TextView appName = findViewById(R.id.thisAppName);
+
+        appName.setText(getApplicationName());
+
+        FlexboxLayout flexboxLayout = inflate.findViewById(R.id.serviceFlex);
+
+        for (String pack : packages){
+
+            LayoutInflater packInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+            assert packInflater != null;
+            View packInflate = packInflater.inflate(R.layout.service_flex_cell, null);
+
+            ImageView imageApp = packInflate.findViewById(R.id.appImage);
+
+            try {
+                Drawable appIcon = getPackageManager().getApplicationIcon(pack);
+
+                imageApp.setImageDrawable(appIcon);
+
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            flexboxLayout.addView(packInflate);
+        }
+
+
+        YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
+
+        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+
+        mainView.addView(inflate);
+
     }
 
     private final BroadcastReceiver guestReceiver = new BroadcastReceiver() {
@@ -216,6 +256,12 @@ public class IsiAppActivity extends AppCompatActivity{
 
     public void doSomethingOnTimeout(){
 
+    }
+
+    private String getApplicationName() {
+        ApplicationInfo applicationInfo = getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : getString(stringId);
     }
 
 
