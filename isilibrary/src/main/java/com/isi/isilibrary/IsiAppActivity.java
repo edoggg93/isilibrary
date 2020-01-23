@@ -69,7 +69,7 @@ public class IsiAppActivity extends AppCompatActivity{
                     getPackageNameSlide(1);
                 }else if(deltay > MIN_DISTANCE && y1 < 40){
 
-                    updateGUI();
+                    getApplicationActive();
 
 
                 }
@@ -94,9 +94,7 @@ public class IsiAppActivity extends AppCompatActivity{
     }
 
     @SuppressLint("InflateParams")
-    private void updateGUI(){
-
-        String[] packages = {"com.isi.isiapp", "com.isi.isicashier", "com.isi.isiorderserver", "com.isi.isiorder", "com.isi.isidoc"};
+    private void updateGUI(String[] packages){
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -220,6 +218,19 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
+    private void getApplicationActive(){
+
+        try{
+            Intent myIntent = new Intent();
+            myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
+            myIntent.putExtra("intent", "getApplicationsActive");
+            startActivityForResult(myIntent, 202);
+        }catch (Exception ignored){
+
+        }
+
+    }
+
     private void getPackageNameSlide(int code){
 
         try{
@@ -273,6 +284,13 @@ public class IsiAppActivity extends AppCompatActivity{
 
 
             }
+
+        }else if (requestCode == 202){
+
+            assert data != null;
+            String[] packageName = data.getStringArrayExtra("applications_active");
+
+            updateGUI(packageName);
 
         }
     }
