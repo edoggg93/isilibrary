@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -98,7 +99,14 @@ public class IsiAppActivity extends AppCompatActivity{
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        inflate = inflater.inflate(R.layout.menu_layout, null);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            inflate = inflater.inflate(R.layout.menu_layout, null);
+        }else{
+            inflate = inflater.inflate(R.layout.menu_layout_portrait, null);
+        }
+
+
 
         Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
 
