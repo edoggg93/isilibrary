@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -176,6 +177,22 @@ public class IsiAppActivity extends AppCompatActivity{
 
             flexboxLayout.addView(packInflate);
         }
+
+        ImageButton logout = inflate.findViewById(R.id.logoutButton);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    Intent myIntent = new Intent();
+                    myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
+                    myIntent.putExtra("intent", "logout");
+                    startActivityForResult(myIntent, 202);
+                }catch (Exception ignored){
+
+                }
+            }
+        });
 
 
         YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
