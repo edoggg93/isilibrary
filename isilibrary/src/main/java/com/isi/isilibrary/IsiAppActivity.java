@@ -188,10 +188,9 @@ public class IsiAppActivity extends AppCompatActivity{
 
                     inflate = null;
 
-                    Intent myIntent = new Intent();
-                    myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
-                    myIntent.putExtra("intent", "logout");
-                    startActivityForResult(myIntent, 203);
+                    Intent intent2 = new Intent("timeoutService");
+                    intent2.putExtra("time_out", 1);
+                    sendBroadcast(intent2);
 
                 }catch (Exception ignored){
 
