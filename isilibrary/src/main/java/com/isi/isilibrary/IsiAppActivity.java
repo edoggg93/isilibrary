@@ -196,7 +196,7 @@ public class IsiAppActivity extends AppCompatActivity{
                     Intent myIntent = new Intent();
                     myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
                     myIntent.putExtra("intent", "logout");
-                    startActivityForResult(myIntent, 202);
+                    startActivityForResult(myIntent, 203);
 
                     if(closing){
                         finish();
