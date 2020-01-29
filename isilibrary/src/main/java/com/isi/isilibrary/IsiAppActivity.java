@@ -184,6 +184,10 @@ public class IsiAppActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 try{
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.isi.isiapp");
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);
+                    }
                     Intent myIntent = new Intent();
                     myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
                     myIntent.putExtra("intent", "logout");
