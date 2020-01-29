@@ -188,10 +188,21 @@ public class IsiAppActivity extends AppCompatActivity{
                     if (launchIntent != null) {
                         startActivity(launchIntent);
                     }
+
+                    mainView.removeView(inflate);
+
+                    inflate = null;
+
                     Intent myIntent = new Intent();
                     myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
                     myIntent.putExtra("intent", "logout");
                     startActivityForResult(myIntent, 202);
+
+                    if(closing){
+                        finish();
+                    }
+
+
                 }catch (Exception ignored){
 
                 }
