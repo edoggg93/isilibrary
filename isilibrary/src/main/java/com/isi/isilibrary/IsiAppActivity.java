@@ -186,8 +186,6 @@ public class IsiAppActivity extends AppCompatActivity{
                 try{
                     mainView.removeView(inflate);
 
-                    inflate = null;
-
                     Intent intent2 = new Intent("timeoutService");
                     intent2.putExtra("time_out", 1);
                     sendBroadcast(intent2);
