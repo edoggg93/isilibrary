@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,7 +69,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 }else if(Math.abs(deltaX) > MIN_DISTANCE && x2 < x1){
                     getPackageNameSlide(1);
-                }else if(deltay > MIN_DISTANCE && y1 < 40){
+                }else if(deltay > MIN_DISTANCE && y1 < 100){
 
                     getApplicationActive();
 
@@ -98,7 +100,14 @@ public class IsiAppActivity extends AppCompatActivity{
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        inflate = inflater.inflate(R.layout.menu_layout, null);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            inflate = inflater.inflate(R.layout.menu_layout, null);
+        }else{
+            inflate = inflater.inflate(R.layout.menu_layout_portrait, null);
+        }
+
+
 
         Button closeMenu = inflate.findViewById(R.id.closeMenuButton);
 
@@ -168,6 +177,24 @@ public class IsiAppActivity extends AppCompatActivity{
 
             flexboxLayout.addView(packInflate);
         }
+
+        ImageButton logout = inflate.findViewById(R.id.logoutButton);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    mainView.removeView(inflate);
+
+                    Intent intent2 = new Intent("timeoutService");
+                    intent2.putExtra("time_out", 1);
+                    sendBroadcast(intent2);
+
+                }catch (Exception ignored){
+
+                }
+            }
+        });
 
 
         YoYo.with(Techniques.SlideInDown).duration(700).repeat(0).playOn(inflate);
