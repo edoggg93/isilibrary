@@ -174,19 +174,13 @@ public class IsiAppActivity extends AppCompatActivity{
             }
         });
 
-        mainView = (ViewGroup) ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView()).getChildAt(0);
-
-
+        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
 
         mainView.addView(underMenu);
 
         Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.bottom_up);
         underMenu.startAnimation(bottomUp);
-
-        float scalefactor = mainView.getHeight() * (underMenu.getHeight() / mainView.getHeight());
-        float translatey = - underMenu.getHeight() / 2; // Translate amount
-        mainView.animate().scaleY(scalefactor).translationYBy(translatey).setDuration(500).start();
 
     }
 
