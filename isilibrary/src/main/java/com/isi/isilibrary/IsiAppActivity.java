@@ -11,6 +11,8 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +33,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
     private float x1;
     private float y1;
-    static final int MIN_DISTANCE = 400;
+    private static final int MIN_DISTANCE = 400;
 
     public boolean closing = true;
 
@@ -38,9 +41,16 @@ public class IsiAppActivity extends AppCompatActivity{
 
     private View inflate = null;
 
+    private int height = 0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
 
     }
 
@@ -53,6 +63,8 @@ public class IsiAppActivity extends AppCompatActivity{
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
                 x1 = ev.getX();
+
+                Log.e("", "dispatchTouchEvent: touched: " + y1 + " height: " + height);
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -73,6 +85,10 @@ public class IsiAppActivity extends AppCompatActivity{
 
                     getApplicationActive();
 
+
+                }else if(deltay > 40 && y1 > (height - 40)){
+
+                    Toast.makeText(this, "this way", Toast.LENGTH_SHORT).show();
 
                 }
 
