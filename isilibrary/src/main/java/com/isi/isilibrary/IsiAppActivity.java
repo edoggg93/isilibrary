@@ -91,9 +91,15 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 }else if(deltay > 40 && y1 > (height - 40)){
 
-                    Log.e("", "dispatchTouchEvent: " + riightPackage + " left " + leftPackage);
+                    if(underMenu == null){
+                        getPackageLeftRight(0, 203);
+                    }else{
+                        mainView.removeView(underMenu);
 
-                    getPackageLeftRight(0, 203);
+                        underMenu = null;
+                    }
+
+
 
                 }
 
@@ -105,15 +111,18 @@ public class IsiAppActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
 
         if(inflate != null){
 
             mainView.removeView(inflate);
 
+            inflate = null;
+
         }else if(underMenu != null){
 
             mainView.removeView(underMenu);
+
+            underMenu = null;
 
         }else{
             super.onBackPressed();
