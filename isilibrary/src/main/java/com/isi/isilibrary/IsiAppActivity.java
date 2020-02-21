@@ -185,7 +185,7 @@ public class IsiAppActivity extends AppCompatActivity{
         underMenu.startAnimation(bottomUp);
 
         float scalefactor = mainView.getHeight() * (underMenu.getHeight() / mainView.getHeight());
-        float translatey = - underMenu.getHeight(); // Translate amount
+        float translatey = - underMenu.getHeight() / 2; // Translate amount
         mainView.animate().scaleY(scalefactor).translationYBy(translatey).setDuration(500).start();
 
     }
