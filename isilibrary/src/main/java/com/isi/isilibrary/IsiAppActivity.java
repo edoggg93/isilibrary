@@ -64,7 +64,7 @@ public class IsiAppActivity extends AppCompatActivity{
                 y1 = ev.getY();
                 x1 = ev.getX();
 
-                Log.e("", "dispatchTouchEvent: touched: " + y1 + " height: " + height);
+                Log.e(" ", "dispatchTouchEvent: touched: " + y1 + " height: " + height);
                 break;
 
             case MotionEvent.ACTION_UP:
