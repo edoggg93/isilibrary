@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -174,7 +176,17 @@ public class IsiAppActivity extends AppCompatActivity{
 
         mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
 
+
+
         mainView.addView(underMenu);
+
+        Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.bottom_up);
+        underMenu.startAnimation(bottomUp);
+
+        float scalefactor = underMenu.getHeight() / mainView.getHeight();
+        float translatey = - underMenu.getHeight(); // Translate amount
+        mainView.animate().scaleX(scalefactor).translationYBy(translatey).setDuration(500).start();
 
     }
 
