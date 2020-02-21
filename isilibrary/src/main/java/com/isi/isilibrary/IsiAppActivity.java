@@ -21,8 +21,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.daimajia.androidanimations.library.Techniques;
@@ -40,6 +38,7 @@ public class IsiAppActivity extends AppCompatActivity{
     private ViewGroup mainView;
 
     private View inflate = null;
+    private View underMenu = null;
 
     private int height = 0;
 
@@ -112,6 +111,10 @@ public class IsiAppActivity extends AppCompatActivity{
 
             mainView.removeView(inflate);
 
+        }else if(underMenu != null){
+
+            mainView.removeView(underMenu);
+
         }else{
             super.onBackPressed();
         }
@@ -122,10 +125,21 @@ public class IsiAppActivity extends AppCompatActivity{
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
 
-        inflate = inflater.inflate(R.layout.under_menu_layout, mainView, false);
+        underMenu = inflater.inflate(R.layout.under_menu_layout, mainView, false);
 
-        ImageButton left = inflate.findViewById(R.id.leftImageButton);
-        ImageButton right = inflate.findViewById(R.id.rightImageButton);
+        ImageButton left = underMenu.findViewById(R.id.leftImageButton);
+        ImageButton right = underMenu.findViewById(R.id.rightImageButton);
+
+
+        try {
+            Drawable icon = getPackageManager().getApplicationIcon(leftPackage);
+            left.setImageDrawable(icon);
+            Drawable icon2 = getPackageManager().getApplicationIcon(riightPackage);
+            right.setImageDrawable(icon2);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +165,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
         mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
 
-        mainView.addView(inflate);
+        mainView.addView(underMenu);
 
     }
 
