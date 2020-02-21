@@ -95,7 +95,6 @@ public class IsiAppActivity extends AppCompatActivity{
                     Log.e("", "dispatchTouchEvent: " + riightPackage + " left " + leftPackage);
 
                     getPackageLeftRight(0, 203);
-                    presentUnderMenu();
 
                 }
 
@@ -123,7 +122,7 @@ public class IsiAppActivity extends AppCompatActivity{
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
 
-        inflate = inflater.inflate(R.layout.menu_layout, mainView, false);
+        inflate = inflater.inflate(R.layout.under_menu_layout, mainView, false);
 
         ImageButton left = inflate.findViewById(R.id.leftImageButton);
         ImageButton right = inflate.findViewById(R.id.rightImageButton);
@@ -405,6 +404,8 @@ public class IsiAppActivity extends AppCompatActivity{
 
             assert data != null;
             riightPackage = data.getStringExtra("package_name");
+
+            presentUnderMenu();
 
         }
     }
