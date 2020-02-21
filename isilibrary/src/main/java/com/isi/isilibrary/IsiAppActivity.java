@@ -43,6 +43,9 @@ public class IsiAppActivity extends AppCompatActivity{
 
     private int height = 0;
 
+    private String leftPackage;
+    private String riightPackage;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -89,7 +92,10 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 }else if(deltay > 40 && y1 > (height - 40)){
 
-                    Toast.makeText(this, "this way", Toast.LENGTH_SHORT).show();
+                    Log.e("", "dispatchTouchEvent: " + riightPackage + " left " + leftPackage);
+
+                    getPackageLeftRight(0, 203);
+                    presentUnderMenu();
 
                 }
 
@@ -110,6 +116,44 @@ public class IsiAppActivity extends AppCompatActivity{
         }else{
             super.onBackPressed();
         }
+    }
+
+    private void presentUnderMenu(){
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+
+        inflate = inflater.inflate(R.layout.menu_layout, mainView, false);
+
+        ImageButton left = inflate.findViewById(R.id.leftImageButton);
+        ImageButton right = inflate.findViewById(R.id.rightImageButton);
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(leftPackage);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);//null pointer check in case package name was not found
+                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                }
+            }
+        });
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(riightPackage);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);//null pointer check in case package name was not found
+                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                }
+            }
+        });
+
+
+
+        mainView.addView(inflate);
+
     }
 
     @SuppressLint("InflateParams")
@@ -293,6 +337,20 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
+    private void getPackageLeftRight(int code, int request){
+
+        try{
+            Intent myIntent = new Intent();
+            myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
+            myIntent.putExtra("package_name", getApplicationContext().getPackageName());
+            myIntent.putExtra("code", code);
+            startActivityForResult(myIntent, request);
+        }catch (Exception ignored){
+
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -335,6 +393,18 @@ public class IsiAppActivity extends AppCompatActivity{
             String[] packageName = data.getStringArrayExtra("applications_active");
 
             updateGUI(packageName);
+
+        }else if (requestCode == 203){
+
+            assert data != null;
+            leftPackage = data.getStringExtra("package_name");
+
+            getPackageLeftRight(1, 204);
+
+        }else if (requestCode == 204){
+
+            assert data != null;
+            riightPackage = data.getStringExtra("package_name");
 
         }
     }
