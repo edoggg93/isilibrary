@@ -149,7 +149,7 @@ public class IsiAppActivity extends AppCompatActivity{
             }
         });
 
-
+        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
 
         mainView.addView(inflate);
 
