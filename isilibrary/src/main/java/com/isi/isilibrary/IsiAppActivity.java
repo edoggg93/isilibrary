@@ -48,10 +48,6 @@ public class IsiAppActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState, persistentState);
 
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        height = displayMetrics.heightPixels;
-
     }
 
     @Override
@@ -63,6 +59,11 @@ public class IsiAppActivity extends AppCompatActivity{
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
                 x1 = ev.getX();
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+                height = displayMetrics.heightPixels;
 
                 Log.e(" ", "dispatchTouchEvent: touched: " + y1 + " height: " + height);
                 break;
