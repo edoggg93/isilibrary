@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.flexbox.FlexboxLayout;
@@ -41,6 +42,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
     private View inflate = null;
     private View underMenu = null;
+    private View lateralMenu = null;
 
     private int height = 0;
 
@@ -69,7 +71,6 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 height = displayMetrics.heightPixels;
 
-                Log.e(" ", "dispatchTouchEvent: touched: " + y1 + " height: " + height);
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -88,7 +89,7 @@ public class IsiAppActivity extends AppCompatActivity{
                     getPackageNameSlide(1);
                 }else if(deltay > MIN_DISTANCE && y1 < 100){
 
-                    getApplicationActive();
+                    getApplicationActive(202);
 
 
                 }else if(deltay > 40 && y1 > (height - 40)){
@@ -129,6 +130,55 @@ public class IsiAppActivity extends AppCompatActivity{
         }else{
             super.onBackPressed();
         }
+    }
+
+    private void lateralMenu(String[] applications){
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+
+        lateralMenu = inflater.inflate(R.layout.menu_lateral, mainView, false);
+
+        ConstraintLayout lateralLayout = underMenu.findViewById(R.id.lateralMenuLayout);
+
+
+        for (int i = 0; i < lateralLayout.getChildCount(); i++) {
+
+            ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
+
+            try {
+                Drawable icon = getPackageManager().getApplicationIcon(applications[i]);
+
+                b.setImageDrawable(icon);
+
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+
+        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
+
+        mainView.addView(lateralMenu);
+
+        Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.bottom_up);
+        lateralMenu.startAnimation(bottomUp);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(lateralMenu == null){
+            getApplicationActive(210);
+        }
+
     }
 
     private void presentUnderMenu(){
@@ -334,13 +384,13 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
-    private void getApplicationActive(){
+    private void getApplicationActive(int code){
 
         try{
             Intent myIntent = new Intent();
             myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
             myIntent.putExtra("intent", "getApplicationsActive");
-            startActivityForResult(myIntent, 202);
+            startActivityForResult(myIntent, code);
         }catch (Exception ignored){
 
         }
@@ -435,6 +485,13 @@ public class IsiAppActivity extends AppCompatActivity{
             riightPackage = data.getStringExtra("package_name");
 
             presentUnderMenu();
+
+        }else if(requestCode == 210){
+
+            assert data != null;
+            String[] packageName = data.getStringArrayExtra("applications_active");
+
+            lateralMenu(packageName);
 
         }
     }
