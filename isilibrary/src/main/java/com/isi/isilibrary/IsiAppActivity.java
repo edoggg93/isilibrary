@@ -151,7 +151,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 b.setImageDrawable(icon);
 
-            } catch (PackageManager.NameNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
