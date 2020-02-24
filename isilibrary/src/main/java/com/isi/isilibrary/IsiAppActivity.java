@@ -139,14 +139,30 @@ public class IsiAppActivity extends AppCompatActivity{
 
         lateralMenu = inflater.inflate(R.layout.menu_lateral, mainView, false);
 
-        ConstraintLayout lateralLayout = lateralMenu.findViewById(R.id.lateralMenuLayout);
+        ConstraintLayout lateralLayout = lateralMenu.findViewById(R.id.lateral_left);
+        ConstraintLayout lateralLayoutRight = lateralMenu.findViewById(R.id.lateral_right);
 
 
-        for (int i = 0; i < lateralLayout.getChildCount(); i++) {
-
-            ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
+        for (int i = 0; i < 3; i++) {
 
             try {
+                ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
+                Drawable icon = getPackageManager().getApplicationIcon(applications[i]);
+
+                b.setImageDrawable(icon);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+
+        for (int i = 3; i < 6; i++) {
+
+            try {
+                ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i - 3);
                 Drawable icon = getPackageManager().getApplicationIcon(applications[i]);
 
                 b.setImageDrawable(icon);

@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lateral_left"
         android:layout_width="70dp"
         android:layout_height="0dp"
         android:background="@drawable/drawable_background"
@@ -51,6 +52,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lateral_right"
         android:layout_width="70dp"
         android:layout_height="0dp"
         android:background="@drawable/drawable_background_inverse"
