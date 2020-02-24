@@ -532,8 +532,7 @@ public class IsiAppActivity extends AppCompatActivity{
             Type listType = new TypeToken<ArrayList<Application>>() {}.getType();
             Gson gson = new Gson();
 
-            String json = gson.toJson(packageName, listType);
-            ArrayList<Application> applications = gson.fromJson(json, listType);
+            ArrayList<Application> applications = gson.fromJson(packageName, listType);
 
             updateGUI(applications);
 
@@ -559,8 +558,7 @@ public class IsiAppActivity extends AppCompatActivity{
             Type listType = new TypeToken<ArrayList<Application>>() {}.getType();
             Gson gson = new Gson();
 
-            String json = gson.toJson(packageName, listType);
-            ArrayList<Application> applications = gson.fromJson(json, listType);
+            ArrayList<Application> applications = gson.fromJson(packageName, listType);
 
             lateralMenu(applications);
 
