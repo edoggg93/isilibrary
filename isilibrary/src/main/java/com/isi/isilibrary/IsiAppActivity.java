@@ -187,7 +187,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
                 if(app.getPosition_in_menu() - 1 == i){
                     try {
-                        ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i);
+                        ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i - 3);
                         Drawable icon = getPackageManager().getApplicationIcon(app.getPack());
 
                         b.setImageDrawable(icon);
