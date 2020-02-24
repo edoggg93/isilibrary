@@ -175,8 +175,10 @@ public class IsiAppActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        if(lateralMenu == null){
-            getApplicationActive(210);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            if(lateralMenu == null){
+                getApplicationActive(210);
+            }
         }
 
     }
