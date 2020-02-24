@@ -30,6 +30,9 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.flexbox.FlexboxLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class IsiAppActivity extends AppCompatActivity{
 
     private float x1;
@@ -132,7 +135,7 @@ public class IsiAppActivity extends AppCompatActivity{
         }
     }
 
-    private void lateralMenu(String[] applications){
+    private void lateralMenu(final String[] applications){
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -142,14 +145,31 @@ public class IsiAppActivity extends AppCompatActivity{
         ConstraintLayout lateralLayout = lateralMenu.findViewById(R.id.lateral_left);
         ConstraintLayout lateralLayoutRight = lateralMenu.findViewById(R.id.lateral_right);
 
+        final ArrayList<String> appli = new ArrayList<>(Arrays.asList(applications));
+
+        appli.remove(getPackageName());
 
         for (int i = 0; i < 3; i++) {
 
             try {
                 ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
-                Drawable icon = getPackageManager().getApplicationIcon(applications[i]);
+                Drawable icon = getPackageManager().getApplicationIcon(appli.get(i));
 
                 b.setImageDrawable(icon);
+
+                final int finalI = i;
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appli.get(finalI));
+                        if (launchIntent != null) {
+                            startActivity(launchIntent);//null pointer check in case package name was not found
+                            overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                        }
+
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -163,9 +183,23 @@ public class IsiAppActivity extends AppCompatActivity{
 
             try {
                 ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i - 3);
-                Drawable icon = getPackageManager().getApplicationIcon(applications[i]);
+                Drawable icon = getPackageManager().getApplicationIcon(appli.get(i));
 
                 b.setImageDrawable(icon);
+
+                final int finalI = i;
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appli.get(finalI));
+                        if (launchIntent != null) {
+                            startActivity(launchIntent);//null pointer check in case package name was not found
+                            overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                        }
+
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
