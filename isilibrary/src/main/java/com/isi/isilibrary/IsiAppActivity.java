@@ -25,13 +25,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.flexbox.FlexboxLayout;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.isi.isilibrary.application.Application;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class IsiAppActivity extends AppCompatActivity{
 
@@ -135,7 +136,7 @@ public class IsiAppActivity extends AppCompatActivity{
         }
     }
 
-    private void lateralMenu(final String[] applications){
+    private void lateralMenu(final ArrayList<Application> applications){
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -145,67 +146,73 @@ public class IsiAppActivity extends AppCompatActivity{
         ConstraintLayout lateralLayout = lateralMenu.findViewById(R.id.lateral_left);
         ConstraintLayout lateralLayoutRight = lateralMenu.findViewById(R.id.lateral_right);
 
-        final ArrayList<String> appli = new ArrayList<>(Arrays.asList(applications));
-
-        appli.remove(getPackageName());
-
         for (int i = 0; i < 3; i++) {
 
-            try {
-                ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
-                Drawable icon = getPackageManager().getApplicationIcon(appli.get(i));
+            for (final Application app : applications){
 
-                b.setImageDrawable(icon);
+                if(app.getPosition_in_menu() - 1 == i){
+                    try {
+                        ImageButton b = (ImageButton) lateralLayout.getChildAt(i);
+                        Drawable icon = getPackageManager().getApplicationIcon(app.getPack());
 
-                final int finalI = i;
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                        b.setImageDrawable(icon);
 
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appli.get(finalI));
-                        if (launchIntent != null) {
-                            startActivity(launchIntent);//null pointer check in case package name was not found
-                            overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-                        }
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(app.getPack());
+                                if (launchIntent != null) {
+                                    startActivity(launchIntent);//null pointer check in case package name was not found
+                                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                                }
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    break;
+                }
+
             }
-
-
 
         }
 
         for (int i = 3; i < 6; i++) {
 
-            try {
-                ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i - 3);
-                Drawable icon = getPackageManager().getApplicationIcon(appli.get(i));
+            for (final Application app : applications){
 
-                b.setImageDrawable(icon);
+                if(app.getPosition_in_menu() - 1 == i){
+                    try {
+                        ImageButton b = (ImageButton) lateralLayoutRight.getChildAt(i);
+                        Drawable icon = getPackageManager().getApplicationIcon(app.getPack());
 
-                final int finalI = i;
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                        b.setImageDrawable(icon);
 
-                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appli.get(finalI));
-                        if (launchIntent != null) {
-                            startActivity(launchIntent);//null pointer check in case package name was not found
-                            overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-                        }
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(app.getPack());
+                                if (launchIntent != null) {
+                                    startActivity(launchIntent);//null pointer check in case package name was not found
+                                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                                }
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    break;
+                }
+
             }
-
-
 
         }
 
@@ -287,7 +294,7 @@ public class IsiAppActivity extends AppCompatActivity{
     }
 
     @SuppressLint("InflateParams")
-    private void updateGUI(String[] packages){
+    private void updateGUI(ArrayList<Application> applications){
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -328,9 +335,9 @@ public class IsiAppActivity extends AppCompatActivity{
 
         FlexboxLayout flexboxLayout = inflate.findViewById(R.id.serviceFlex);
 
-        for (final String pack : packages){
+        for (final Application pack : applications){
 
-            if(pack.equals(getPackageName())){
+            if(pack.getPack().equals(getPackageName())){
                 continue;
             }
 
@@ -341,7 +348,7 @@ public class IsiAppActivity extends AppCompatActivity{
             ImageView imageApp = packInflate.findViewById(R.id.appImage);
 
             try {
-                Drawable appIcon = getPackageManager().getApplicationIcon(pack);
+                Drawable appIcon = getPackageManager().getApplicationIcon(pack.getName());
 
                 imageApp.setImageDrawable(appIcon);
 
@@ -351,12 +358,12 @@ public class IsiAppActivity extends AppCompatActivity{
 
             TextView appNameSecondary = packInflate.findViewById(R.id.appName);
 
-            appNameSecondary.setText(getApplicationName(pack));
+            appNameSecondary.setText(getApplicationName(pack.getName()));
 
             packInflate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack);
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack.getName());
                     if (launchIntent != null) {
                         mainView.removeView(inflate);
 
@@ -520,9 +527,15 @@ public class IsiAppActivity extends AppCompatActivity{
         }else if (requestCode == 202){
 
             assert data != null;
-            String[] packageName = data.getStringArrayExtra("applications_active");
+            String packageName = data.getStringExtra("applications_active");
 
-            updateGUI(packageName);
+            Type listType = new TypeToken<ArrayList<Application>>() {}.getType();
+            Gson gson = new Gson();
+
+            String json = gson.toJson(packageName, listType);
+            ArrayList<Application> applications = gson.fromJson(json, listType);
+
+            updateGUI(applications);
 
         }else if (requestCode == 203){
 
@@ -541,9 +554,15 @@ public class IsiAppActivity extends AppCompatActivity{
         }else if(requestCode == 210){
 
             assert data != null;
-            String[] packageName = data.getStringArrayExtra("applications_active");
+            String packageName = data.getStringExtra("applications_active");
 
-            lateralMenu(packageName);
+            Type listType = new TypeToken<ArrayList<Application>>() {}.getType();
+            Gson gson = new Gson();
+
+            String json = gson.toJson(packageName, listType);
+            ArrayList<Application> applications = gson.fromJson(json, listType);
+
+            lateralMenu(applications);
 
         }
     }
@@ -566,6 +585,19 @@ public class IsiAppActivity extends AppCompatActivity{
             ai = null;
         }
         return (String) (ai != null ? pm.getApplicationLabel(ai) : "");
+    }
+
+    public void repaintMenu(){
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+
+            mainView.removeView(lateralMenu);
+
+            lateralMenu = null;
+
+            getApplicationActive(210);
+        }
+
     }
 
 
