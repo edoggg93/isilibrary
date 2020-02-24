@@ -139,7 +139,7 @@ public class IsiAppActivity extends AppCompatActivity{
 
         lateralMenu = inflater.inflate(R.layout.menu_lateral, mainView, false);
 
-        ConstraintLayout lateralLayout = underMenu.findViewById(R.id.lateralMenuLayout);
+        ConstraintLayout lateralLayout = lateralMenu.findViewById(R.id.lateralMenuLayout);
 
 
         for (int i = 0; i < lateralLayout.getChildCount(); i++) {
