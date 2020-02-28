@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -528,6 +529,8 @@ public class IsiAppActivity extends AppCompatActivity{
 
             assert data != null;
             String packageName = data.getStringExtra("applications_active");
+
+            Log.e("", "onActivityResult: " + packageName);
 
             Type listType = new TypeToken<ArrayList<Application>>() {}.getType();
             Gson gson = new Gson();
