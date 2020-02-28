@@ -349,7 +349,7 @@ public class IsiAppActivity extends AppCompatActivity{
             ImageView imageApp = packInflate.findViewById(R.id.appImage);
 
             try {
-                Drawable appIcon = getPackageManager().getApplicationIcon(pack.getName());
+                Drawable appIcon = getPackageManager().getApplicationIcon(pack.getPack());
 
                 imageApp.setImageDrawable(appIcon);
 
@@ -359,12 +359,12 @@ public class IsiAppActivity extends AppCompatActivity{
 
             TextView appNameSecondary = packInflate.findViewById(R.id.appName);
 
-            appNameSecondary.setText(getApplicationName(pack.getName()));
+            appNameSecondary.setText(pack.getName());
 
             packInflate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack.getName());
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack.getPack());
                     if (launchIntent != null) {
                         mainView.removeView(inflate);
 
