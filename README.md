@@ -12,7 +12,7 @@ Come utilizzare la libreria:
 . Nel Gradle dell'applicazione inserire:
 <br>
 <pre>
-	allprojects {  
+    allprojects {  
         repositories {  
             maven { url 'https://jitpack.io' }  
         }  
