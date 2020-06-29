@@ -10,11 +10,14 @@ Come utilizzare la libreria:
 
 . La libreria lavora se e solo se sul dispositivo è stato installato il progetto IsiApp
 . Nel Gradle dell'applicazione inserire:
+<br>
+<pre>
 	allprojects {  
         repositories {  
             maven { url 'https://jitpack.io' }  
         }  
     }  
+	</pre>
 
 . Sempre nel gradle importare:
     implementation 'com.github.edoggg93:isilibrary:1.3.16'  
