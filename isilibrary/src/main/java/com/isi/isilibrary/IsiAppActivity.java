@@ -229,13 +229,25 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
+    public boolean isPackageExisted(String targetPackage){
+        PackageManager pm=getPackageManager();
+        try {
+            pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            if(lateralMenu == null){
-                getApplicationActive(210);
+        if(isPackageExisted("com.isi.isiapp")){
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                if(lateralMenu == null){
+                    getApplicationActive(210);
+                }
             }
         }
 
