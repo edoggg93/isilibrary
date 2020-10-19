@@ -243,7 +243,7 @@ public class IsiAppActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        if(isPackageExisted("com.isi.isiapp")){
+        if(!isPackageExisted("com.isi.isiapp")){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 if(lateralMenu == null){
                     getApplicationActive(210);
