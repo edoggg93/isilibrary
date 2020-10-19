@@ -259,6 +259,7 @@ public class IsiAppActivity extends AppCompatActivity{
                         DrawerLayout.LayoutParams.WRAP_CONTENT
                 );
                 params.setMargins(70, 0, 70, 0);
+                view.setLayoutParams(params);
             }
 
         }
