@@ -26,6 +26,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.flexbox.FlexboxLayout;
@@ -249,6 +251,16 @@ public class IsiAppActivity extends AppCompatActivity{
                     getApplicationActive(210);
                 }
             }
+        }else{
+            ViewGroup view = (ViewGroup)getWindow().getDecorView();
+            if(view instanceof DrawerLayout){
+                DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(
+                        DrawerLayout.LayoutParams.WRAP_CONTENT,
+                        DrawerLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(70, 0, 70, 0);
+            }
+
         }
 
     }
