@@ -494,7 +494,7 @@ public class IsiAppActivity extends AppCompatActivity{
             }else{
                 startActivityForResult(myIntent, 201);
             }
-        }catch (Exception ignored){
+        }catch (Exception e){
 
         }
 
