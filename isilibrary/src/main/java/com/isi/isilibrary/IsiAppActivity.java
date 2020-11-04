@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,17 +53,6 @@ public class IsiAppActivity extends AppCompatActivity{
     private String leftPackage;
     private String riightPackage;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            setContentView(R.layout.isiapp_layout_landscape);
-
-        }
-
-
-    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -454,6 +442,11 @@ public class IsiAppActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            setContentView(R.layout.isiapp_layout_landscape);
+
+        }
 
         registerReceiver(guestReceiver, new IntentFilter("timeoutService"));
 
