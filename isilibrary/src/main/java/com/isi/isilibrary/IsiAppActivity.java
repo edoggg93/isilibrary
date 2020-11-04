@@ -26,8 +26,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.flexbox.FlexboxLayout;
@@ -59,6 +57,11 @@ public class IsiAppActivity extends AppCompatActivity{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            setContentView(R.layout.isiapp_layout_landscape);
+
+        }
 
 
     }
@@ -245,25 +248,13 @@ public class IsiAppActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        if(!isPackageExisted("com.isi.isiapp")){
+        if(isPackageExisted("com.isi.isiapp")){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 if(lateralMenu == null){
                     getApplicationActive(210);
                 }
             }
-        }else{
-            ViewGroup view = (ViewGroup)getWindow().getDecorView();
-            if(view instanceof DrawerLayout){
-                DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(
-                        DrawerLayout.LayoutParams.WRAP_CONTENT,
-                        DrawerLayout.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(70, 0, 70, 0);
-                view.setLayoutParams(params);
-            }
-
         }
-
     }
 
     private void presentUnderMenu(){
@@ -494,7 +485,7 @@ public class IsiAppActivity extends AppCompatActivity{
             }else{
                 startActivityForResult(myIntent, 201);
             }
-        }catch (Exception e){
+        }catch (Exception ignored){
 
         }
 
