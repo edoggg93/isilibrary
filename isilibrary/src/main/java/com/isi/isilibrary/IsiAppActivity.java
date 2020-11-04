@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -445,19 +446,21 @@ public class IsiAppActivity extends AppCompatActivity{
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 
-            View v = this.findViewById(android.R.id.content).getRootView();
-
-            setContentView(R.layout.isiapp_layout_landscape);
-
-            ConstraintLayout layout = findViewById(R.id.includeView);
-
-            layout.addView(v);
+            setMargins(findViewById(android.R.id.content).getRootView(), 70, 0, 70, 0);
 
         }
 
         registerReceiver(guestReceiver, new IntentFilter("timeoutService"));
 
 
+    }
+
+    private void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 
     private void getApplicationActive(int code){
