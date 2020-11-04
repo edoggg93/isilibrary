@@ -445,11 +445,11 @@ public class IsiAppActivity extends AppCompatActivity{
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 
-            View v = getWindow().getDecorView();
+            View v = this.findViewById(android.R.id.content).getRootView();
 
             setContentView(R.layout.isiapp_layout_landscape);
 
-            ConstraintLayout layout = findViewById(R.id.innerView);
+            ConstraintLayout layout = findViewById(R.id.includeView);
 
             layout.addView(v);
 
