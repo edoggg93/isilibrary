@@ -446,21 +446,19 @@ public class IsiAppActivity extends AppCompatActivity{
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 
-            setMargins(findViewById(android.R.id.content).getRootView(), 70, 0, 70, 0);
+            ViewGroup v = findViewById(android.R.id.content);
+
+            setContentView(R.layout.isiapp_layout_landscape);
+
+            ConstraintLayout inner = findViewById(R.id.innerView);
+
+            inner.addView(v);
 
         }
 
         registerReceiver(guestReceiver, new IntentFilter("timeoutService"));
 
 
-    }
-
-    private void setMargins (View v, int l, int t, int r, int b) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
-            v.requestLayout();
-        }
     }
 
     private void getApplicationActive(int code){
