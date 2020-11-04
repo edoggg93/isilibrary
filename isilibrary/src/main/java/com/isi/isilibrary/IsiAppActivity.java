@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,12 +47,6 @@ public class IsiAppActivity extends AppCompatActivity{
     private View underMenu = null;
     private View lateralMenu = null;
 
-    private int height = 0;
-
-    private String leftPackage;
-    private String riightPackage;
-
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -63,11 +56,6 @@ public class IsiAppActivity extends AppCompatActivity{
             case MotionEvent.ACTION_DOWN:
                 y1 = ev.getY();
                 x1 = ev.getX();
-
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-                height = displayMetrics.heightPixels;
 
                 break;
 
@@ -88,18 +76,6 @@ public class IsiAppActivity extends AppCompatActivity{
                 }else if(deltay > MIN_DISTANCE && y1 < 100){
 
                     getApplicationActive(202);
-
-
-                }else if(deltay > 40 && y1 > (height - 40)){
-
-                    if(underMenu == null){
-                        getPackageLeftRight(0, 203);
-                    }else{
-                        mainView.removeView(underMenu);
-
-                        underMenu = null;
-                    }
-
 
 
                 }
@@ -243,59 +219,6 @@ public class IsiAppActivity extends AppCompatActivity{
                 }
             }
         }
-    }
-
-    private void presentUnderMenu(){
-
-        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-
-        underMenu = inflater.inflate(R.layout.under_menu_layout, mainView, false);
-
-        ImageButton left = underMenu.findViewById(R.id.leftImageButton);
-        ImageButton right = underMenu.findViewById(R.id.rightImageButton);
-
-
-        try {
-            Drawable icon = getPackageManager().getApplicationIcon(leftPackage);
-            left.setImageDrawable(icon);
-            Drawable icon2 = getPackageManager().getApplicationIcon(riightPackage);
-            right.setImageDrawable(icon2);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(leftPackage);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);//null pointer check in case package name was not found
-                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-                }
-            }
-        });
-
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(riightPackage);
-                if (launchIntent != null) {
-                    startActivity(launchIntent);//null pointer check in case package name was not found
-                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                }
-            }
-        });
-
-        mainView = ((ViewGroup) IsiAppActivity.this.getWindow().getDecorView().getRootView());
-
-        mainView.addView(underMenu);
-
-        Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.bottom_up);
-        underMenu.startAnimation(bottomUp);
-
     }
 
     @SuppressLint("InflateParams")
@@ -443,20 +366,6 @@ public class IsiAppActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-
-            ViewGroup v = findViewById(android.R.id.content);
-
-            setContentView(R.layout.isiapp_layout_landscape);
-
-            ConstraintLayout inner = findViewById(R.id.innerView);
-
-            inner.removeAllViews();
-
-            inner.addView(v);
-
-        }
-
         registerReceiver(guestReceiver, new IntentFilter("timeoutService"));
 
 
@@ -493,20 +402,6 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
-    private void getPackageLeftRight(int code, int request){
-
-        try{
-            Intent myIntent = new Intent();
-            myIntent.setClassName("com.isi.isiapp", "com.isi.isiapp.PackageActivity");
-            myIntent.putExtra("package_name", getApplicationContext().getPackageName());
-            myIntent.putExtra("code", code);
-            startActivityForResult(myIntent, request);
-        }catch (Exception ignored){
-
-        }
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -518,6 +413,7 @@ public class IsiAppActivity extends AppCompatActivity{
                 assert data != null;
                 String packageName = data.getStringExtra("package_name");
 
+                assert packageName != null;
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
                 if (launchIntent != null) {
                     startActivity(launchIntent);//null pointer check in case package name was not found
@@ -534,6 +430,7 @@ public class IsiAppActivity extends AppCompatActivity{
                 assert data != null;
                 String packageName = data.getStringExtra("package_name");
 
+                assert packageName != null;
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
                 if (launchIntent != null) {
                     startActivity(launchIntent);//null pointer check in case package name was not found
@@ -556,20 +453,6 @@ public class IsiAppActivity extends AppCompatActivity{
             ArrayList<Application> applications = gson.fromJson(packageName, listType);
 
             updateGUI(applications);
-
-        }else if (requestCode == 203){
-
-            assert data != null;
-            leftPackage = data.getStringExtra("package_name");
-
-            getPackageLeftRight(1, 204);
-
-        }else if (requestCode == 204){
-
-            assert data != null;
-            riightPackage = data.getStringExtra("package_name");
-
-            presentUnderMenu();
 
         }else if(requestCode == 210){
 
