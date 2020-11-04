@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -451,6 +450,8 @@ public class IsiAppActivity extends AppCompatActivity{
             setContentView(R.layout.isiapp_layout_landscape);
 
             ConstraintLayout inner = findViewById(R.id.innerView);
+
+            inner.removeAllViews();
 
             inner.addView(v);
 
