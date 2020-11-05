@@ -473,6 +473,10 @@ public class IsiAppActivity extends AppCompatActivity{
 
     }
 
+    public void sendBroadcast(String title, String messgae){
+       NotifyBroadcast.sendBroadcast(this, title, messgae);
+    }
+
     private String getApplicationName(String packageName) {
 
         if(packageName == null){
